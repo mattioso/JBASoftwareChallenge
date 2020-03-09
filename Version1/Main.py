@@ -42,8 +42,8 @@ class Reader(object):
   def getYears(self):
     return self.fileLines[4].split("[")[2][:-2].split("=").pop(1).split("-")
 
-filePath = ""
-databasePath = ""
+filePath = "cru-ts-2-10.1991-2000-cutdown-modified.pre"
+databasePath = "Database.csv"
 
-Reader("cru-ts-2-10.1991-2000-cutdown-modified.pre", "Database.csv")
+Reader(filePath, databasePath)
 
