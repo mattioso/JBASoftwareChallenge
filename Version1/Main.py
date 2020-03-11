@@ -1,3 +1,6 @@
+
+from tkinter import *
+
 class Reader(object):
 
   def __init__(self, fileName, databasePath):
@@ -42,8 +45,55 @@ class Reader(object):
   def getYears(self):
     return self.fileLines[4].split("[")[2][:-2].split("=").pop(1).split("-")
 
-filePath = "cru-ts-2-10.1991-2000-cutdown-modified.pre"
-databasePath = "Database.csv"
+class InputWindow(object):
 
-Reader(filePath, databasePath)
+  def __init__(self):
+    self.root = Tk()
+
+    self.root.geometry("300x300")
+
+    self.fileLocationLabel = Label(self.root, text="File Location")
+    self.fileLocationEntry = Entry(self.root)
+
+    self.fileLocationLabel.grid(row=0, column=0)
+    self.fileLocationEntry.grid(row=0, column=1, ipadx=25, ipady=3, padx=3, pady=2)
+
+    self.databaseLocationLabel = Label(self.root, text="Database Location")
+    self.databaseLocationEntry = Entry(self.root)
+
+    self.databaseLocationLabel.grid(row=1, column=0)
+    self.databaseLocationEntry.grid(row=1, column=1, ipadx=25, ipady=3, padx=3, pady=2)
+
+    self.submitButton = Button(self.root, text="Create Database", command=self.getData)
+    self.submitButton.grid(row=3, ipadx=30, ipady=5, columnspan=2)
+
+    self.warnings = StringVar()
+    self.warnings.set(" ")
+    self.warningsLabel = Label(self.root, textvariable=self.warnings)
+    self.warningsLabel.grid(row=4, ipadx=30, ipady=5, columnspan=2)
+
+  def update(self):
+    mainloop()
+
+  def getData(self):
+    self.fileLocation = self.fileLocationEntry.get()
+    self.databaseLocation = self.databaseLocationEntry.get()
+
+    if self.checkFile(self.fileLocation):
+      self.warnings.set("")
+      self.r = Reader(self.fileLocation, self.databaseLocation)
+      self.warnings.set("Completed")
+
+    else:
+      self.warnings.set("File location not found")
+
+  def checkFile(self, fileLoc):
+    try:
+      file = open(fileLoc, 'r')
+      return True
+    except FileNotFoundError:
+      return False
+
+window = InputWindow()
+window.update()
 
